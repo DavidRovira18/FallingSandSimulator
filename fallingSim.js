@@ -10,6 +10,12 @@ canvas.height = num_cells * cell_size;
 grid = new Grid(num_cells, cell_size);
 grid.initCells();
 
+//DEFINE ELEMENTS
+const elements = {
+    NOTHING: 0,
+    SAND: 1
+}
+
 //User Interaction
 canvas.addEventListener("click", onClick);
 
@@ -38,7 +44,8 @@ function onClick(event)
     console.log(event.clientX, event.clientY);
     var index = TOOLS.IX(cell_x, cell_y, num_cells);
     
-    grid.revealCell(index);
+    var cell = grid.cells[index];
+    cell.element = elements.SAND;
 }
 
 sim();
