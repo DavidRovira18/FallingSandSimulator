@@ -31,12 +31,8 @@ class Grid {
 
     update()
     {
-        for(var i = 0; i < this.num_cells_x; ++i)
-            for(var j = 0; j < this.num_cells_y; ++j)
-            {
-                var index = TOOLS.IX(i, j, this.num_cells_x)
-                this.updateParticle(index);
-            }
+        for (let i = 0; i < this.num_cells - this.num_cells_y - 1; ++i)
+            this.updateParticle(i);
     }
 
     updateParticle(index)
