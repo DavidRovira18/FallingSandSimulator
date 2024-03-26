@@ -22,6 +22,7 @@ canvas.addEventListener("click", onClick);
 function sim()
 {
     draw(ctx);
+    grid.update();
     requestAnimationFrame(sim);
 }
 
@@ -41,7 +42,6 @@ function onClick(event)
     var cell_x = Math.floor(event.clientX  / cell_size);
     var cell_y = Math.floor(event.clientY  / cell_size);
     
-    console.log(event.clientX, event.clientY);
     var index = TOOLS.IX(cell_x, cell_y, num_cells);
     
     var cell = grid.cells[index];

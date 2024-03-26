@@ -29,10 +29,43 @@ class Grid {
             }   
     }
 
+    update()
+    {
+        for(var i = 0; i < this.num_cells_x; ++i)
+            for(var j = 0; j < this.num_cells_y; ++j)
+            {
+                var index = TOOLS.IX(i, j, this.num_cells_x)
+                this.updateParticle(index);
+            }
+    }
+
+    updateParticle(index)
+    {
+        const particle_below = index + this.num_cells_x;
+        //If goes out of canvas return
+        if (particle_below >= this.num_cells)
+            return;
+
+        if (this.isEmpty(particle_below))
+            this.swap(index, particle_below)
+    }
+
     // Clear the grid
     clear() 
     {
         this.cells = new Array(this.num_cells).fill(0);
+    }
+
+    // Swap particles
+    swap(index_a, index_b) {
+        const temp = this.cells[index_a];
+        this.cells[index_a] = this.cells[index_b];
+        this.cells[index_b] = temp;
+    }
+
+    // Check if a cell is nothing
+    isEmpty(index) {
+        return this.cells[index].element === 0;
     }
 }
 
