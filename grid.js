@@ -16,8 +16,19 @@ class Grid{
     {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-        if(this.render_grid)
-            this.renderGrid();
+        for(var row = 0; row < this.num_rows; ++row)
+            for(var col = 0; col < this.num_cols; ++col)
+            {
+                const x = col * this.cell_size;
+                const y = row * this.cell_size;
+                
+                if(this.render_grid)
+                    this.renderGrid(x,y);
+
+                //Cell Index
+                const idx = row * this.num_cols + col;
+                this.cells[idx].render(x, y, ctx);
+            }
 
     }
 
@@ -41,17 +52,10 @@ class Grid{
         this.cells = new Array(this.num_cells).fill(0);
     }
 
-    renderGrid() //DEBUG TO RENDER GRID BORDERS
+    renderGrid(x,y) //DEBUG TO RENDER GRID BORDERS
     {
-        for(var row = 0; row < this.num_rows; ++row)
-            for(var col = 0; col < this.num_cols; ++col)
-            {
-                const x = col * this.cell_size;
-                const y = row * this.cell_size;
-
-                this.ctx.strokeStyle= "white";
-                this.ctx.strokeRect(x, y, this.cell_size, this.cell_size);
-            }
+        this.ctx.strokeStyle= "white";
+        this.ctx.strokeRect(x, y, this.cell_size, this.cell_size);
     }
 
     handleClick(clientX,clientY) 
@@ -61,24 +65,49 @@ class Grid{
         const x = clientX - rect.left;
         const y = clientY - rect.top;
 
-        //Get clicked cell
-        const col = Math.floor(x / this.cell_size);
-        const row = Math.floor(y / this.cell_size);
-        const index = row * this.num_cols + col;
-        console.log(`Cell clicked: ${index}`);
+        var spread_matrix = 3;
+        var extent = Math.floor(spread_matrix/2);
+        for(var i = -extent; i <= extent; ++i)
+            for(var j = -extent; j <= extent; ++j)
+            {
+                const col = Math.floor(x / this.cell_size) + i;
+                const row = Math.floor(y / this.cell_size) + j;
+                const index = row * this.num_cols + col;
+                
+                //Check boundaries
+                if(col > this.num_cols + 1 || col < 0)
+                    continue;
+                if(row > this.num_rows + 1)
+                    continue;
+
+                //Add randomness
+                const isSand = Math.random() < 0.5;
+                if(!isSand)
+                    continue;
+                
+                this.cells[index].state = 1;
+            }
+
     }
 }
 
 class Cell{
-    constructor(cell_size, ctx)
+    constructor(cell_size)
     {
         this.cell_size = cell_size;
-        this.ctx = ctx;
+        this.state = 0;
     }
 
-    render()
+    render(x, y, ctx)
     {
-        //ADD CODE TO RENDER CELL
+        if (this.state == 0)
+            return;
+
+        if(this.state == 1)
+        {
+            ctx.fillStyle = "white";
+            ctx.fillRect(x, y, this.cell_size, this.cell_size);
+        }
     }
 
     update()
