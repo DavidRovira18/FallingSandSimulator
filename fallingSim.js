@@ -13,6 +13,10 @@ function loop()
 {
     currentGrid.render();
     fallingSand();
+    currentGrid.cells.forEach(cell => {
+        if(cell.state == TOOLS.CELL_STATES.SAND)
+            console.log(cell.color)
+    });
     requestAnimationFrame(loop);
 }
 
@@ -46,17 +50,17 @@ function fallingSand() //CHECK THE STATE OF THE SURROUNDINGS AND MAKE SAND FALL
             const idx = row * currentGrid.num_cols + col;
             const cell = currentGrid.cells[idx]; 
 
-            if (cell.state == 1)
+            if (cell.state == TOOLS.CELL_STATES.SAND)
             {
                 if(row < currentGrid.num_rows - 1)
                 {
                     const idx_below = idx + currentGrid.num_cols;
                     const cell_below = currentGrid.cells[idx_below];
 
-                    if (cell_below.state == 0)
+                    if (cell_below.state == TOOLS.CELL_STATES.EMPTY)
                     {
-                        nextGrid.cells[idx].state = 0;
-                        nextGrid.cells[idx_below].state = 1;
+                        nextGrid.cells[idx].state = TOOLS.CELL_STATES.EMPTY;
+                        nextGrid.cells[idx_below].state = TOOLS.CELL_STATES.SAND;
                         continue;
                     }
 
@@ -65,10 +69,10 @@ function fallingSand() //CHECK THE STATE OF THE SURROUNDINGS AND MAKE SAND FALL
                     { 
                         const idx_belowL = idx + currentGrid.num_cols - 1;
                         const cell_belowL = currentGrid.cells[idx_belowL];
-                        if (cell_belowL.state == 0) 
+                        if (cell_belowL.state == TOOLS.CELL_STATES.EMPTY) 
                         {
-                            nextGrid.cells[idx].state = 0;
-                            nextGrid.cells[idx_belowL].state = 1;
+                            nextGrid.cells[idx].state = TOOLS.CELL_STATES.EMPTY;
+                            nextGrid.cells[idx_belowL].state = TOOLS.CELL_STATES.SAND;
                             continue;
                         }
                     }
@@ -77,15 +81,15 @@ function fallingSand() //CHECK THE STATE OF THE SURROUNDINGS AND MAKE SAND FALL
                     { 
                         const idx_belowR = idx + currentGrid.num_cols + 1;
                         const cell_belowR = currentGrid.cells[idx_belowR];
-                        if (cell_belowR.state == 0) 
+                        if (cell_belowR.state == TOOLS.CELL_STATES.EMPTY) 
                         {
-                            nextGrid.cells[idx].state = 0;
-                            nextGrid.cells[idx_belowR].state = 1;
+                            nextGrid.cells[idx].state = TOOLS.CELL_STATES.EMPTY;
+                            nextGrid.cells[idx_belowR].state = TOOLS.CELL_STATES.SAND;
                             continue; // Move the sand to the bottom-right
                         }
                     }
                 }
-                nextGrid.cells[idx].state = 1;
+                nextGrid.cells[idx].state = TOOLS.CELL_STATES.SAND;
             }
         }
 

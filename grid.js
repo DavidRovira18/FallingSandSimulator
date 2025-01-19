@@ -74,18 +74,15 @@ class Grid{
                 const row = Math.floor(y / this.cell_size) + j;
                 const index = row * this.num_cols + col;
                 
-                //Check boundaries
-                if(col > this.num_cols + 1 || col < 0)
-                    continue;
-                if(row > this.num_rows + 1)
+                if (col >= this.num_cols || col < 0 || row >= this.num_rows || row < 0) 
                     continue;
 
                 //Add randomness
                 const isSand = Math.random() < 0.5;
                 if(!isSand)
                     continue;
-                
-                this.cells[index].state = 1;
+
+                this.cells[index].state = TOOLS.CELL_STATES.SAND;
             }
 
     }
@@ -95,17 +92,18 @@ class Cell{
     constructor(cell_size)
     {
         this.cell_size = cell_size;
-        this.state = 0;
+        this.state = TOOLS.CELL_STATES.EMPTY;
+        this.color = undefined;
     }
 
     render(x, y, ctx)
     {
-        if (this.state == 0)
+        if (this.state == TOOLS.CELL_STATES.EMPTY)
             return;
 
-        if(this.state == 1)
+        if(this.state == TOOLS.CELL_STATES.SAND)
         {
-            ctx.fillStyle = "white";
+            ctx.fillStyle = this.color;
             ctx.fillRect(x, y, this.cell_size, this.cell_size);
         }
     }
