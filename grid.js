@@ -103,7 +103,7 @@ class Cell{
 
         if(this.state == TOOLS.CELL_STATES.SAND)
         {
-            ctx.fillStyle = this.color;
+            ctx.fillStyle = TOOLS.ELEMENTS_COLORS.SAND_COLOR;
             ctx.fillRect(x, y, this.cell_size, this.cell_size);
         }
     }
